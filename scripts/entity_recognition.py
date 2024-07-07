@@ -1,8 +1,9 @@
-from nltk.tokenize import word_tokenize, sent_tokenize
+import spacy
+
+nlp = spacy.load("en_core_web_md")
 
 
-def tokenize_document(document):
-    sent_tokens = sent_tokenize(document)
-    word_tokens = word_tokenize(sent_tokens)
-    tokens = set(word_tokens)
-    return tokens
+def entity_recognize(document):
+    document_token = nlp(document)
+    for entity in document_token.ents:
+        return entity.text, entity.label_
