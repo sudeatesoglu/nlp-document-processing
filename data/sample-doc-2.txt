@@ -1,0 +1,5 @@
+Natural Language Processing is a branch of artificial intelligence that
+deals with the interaction between computers and humans using the natural language.
+The primary objective of NLP is to facilitate computers to understand, interpret,
+and generate human languages effectively. There are many applications of NLP such as machine translation,
+sentiment analysis, text summarization, among others.
