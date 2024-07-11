@@ -1,5 +1,6 @@
 import gradio as gr
 from similarity import *
+from entity_recognition import ner_interface
 from pca_visualization import pca_interface
 
 similarity_demo = gr.Interface(
@@ -22,8 +23,21 @@ categorical_similarity_demo = gr.Interface(
         gr.File(label="Document")
     ],
     outputs=gr.Textbox(label="Categorical Similarity Scores"),
-    title="Categorical Similarity Detector",
-    description="Enter word to check the similarity to document."
+    title="Categorical Similarity Checker",
+    description="Check the similarity of documents to a given category."
+)
+
+ner_demo = gr.Interface(
+    fn=ner_interface,
+    inputs=[
+        gr.Radio(["PDF", "TXT", "DOCX"], label="Document Type"),
+        gr.File(label="Document")
+    ],
+    outputs=[
+        gr.Textbox(label="Named Entities"),
+    ],
+    title="Named Entity Recognition (NER)",
+    description="Extract and display named entities from documents."
 )
 
 pca_demo = gr.Interface(
@@ -34,21 +48,24 @@ pca_demo = gr.Interface(
     ],
     outputs=gr.Plot(),
     title="Document PCA Visualization",
-    description="Visualize document vectors with PCA."
+    description="Visualize document vectors using PCA."
 )
 
 demo = gr.TabbedInterface(
     interface_list=[
         similarity_demo,
         categorical_similarity_demo,
+        ner_demo,
         pca_demo
     ],
     tab_names=[
         "Document Similarity",
         "Categorical Similarity",
+        "Named Entity Recognition",
         "PCA Visualization"
     ]
 )
+
 
 if __name__ == "__main__":
     demo.launch()
