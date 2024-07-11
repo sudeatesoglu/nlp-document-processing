@@ -9,6 +9,7 @@ lemmatizer = WordNetLemmatizer()
 
 
 def preprocess_text(text):
+    text = text.lower()
     text = remove_punctuation(text)
     text = remove_stopwords(text)
     text = lemmatize_text(text)
