@@ -1,28 +1,14 @@
 import spacy
 import numpy as np
+from handle_document import read_document
 from text_processing import preprocess_text
 
 nlp = spacy.load("en_core_web_md")
 
 
 def check_doc_similarity(doc_type, doc_1, doc_2):
-    """
-    Checks the similarity between two documents after preprocessing.
-    :param doc_type: (str) the type of the documents ('PDF' or 'TXT').
-    :param doc_1: (str) path to the first document.
-    :param doc_2: (str) path to the second documents.
-    :return: (str) similarity score of two documents.
-    """
-    if doc_type == "PDF":
-        with open(doc_1, 'rb') as file:
-            data_1 = file.read()
-        with open(doc_2, 'rb') as file:
-            data_2 = file.read()
-    elif doc_type == "TXT":
-        with open(doc_1, 'r') as file:
-            data_1 = file.read()
-        with open(doc_2, 'r') as file:
-            data_2 = file.read()
+    data_1 = read_document(doc_type, doc_1)
+    data_2 = read_document(doc_type, doc_2)
 
     data_1 = preprocess_text(data_1)
     data_2 = preprocess_text(data_2)
@@ -41,11 +27,11 @@ def catch_related_words(word):
     return similar_words_list
 
 
-def check_categorical_similarity(category, documents):
-    document_token = [nlp(text) for text in documents]
+def check_categorical_similarity(category, doc_type, doc):
+    document = read_document(doc_type, doc)
+    document = preprocess_text(document)
+    category = preprocess_text(category)
     category_token = nlp(category)
-    similarities = []
-    for i, doc in enumerate(document_token):
-        similarity = round(doc.similarity(category_token), 2)
-        similarities.append((f"Document {i+1}", similarity))
-    return similarities
+    document_token = nlp(document)
+    similarity = round(document_token.similarity(category_token), 2)
+    return f"Similarity according to category: {similarity}"
