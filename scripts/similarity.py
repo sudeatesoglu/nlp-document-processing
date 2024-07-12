@@ -1,5 +1,6 @@
 import spacy
 import numpy as np
+import pymupdf
 from handle_document import read_document
 from text_processing import preprocess_text
 
@@ -7,17 +8,28 @@ nlp = spacy.load("en_core_web_md")
 
 
 def check_doc_similarity(doc_type, doc_1, doc_2):
-    data_1 = read_document(doc_type, doc_1)
-    data_2 = read_document(doc_type, doc_2)
+    document_1 = read_document(doc_type, doc_1)
+    document_1 = preprocess_text(document_1)
+    document_2 = read_document(doc_type, doc_2)
+    document_2 = preprocess_text(document_2)
 
-    data_1 = preprocess_text(data_1)
-    data_2 = preprocess_text(data_2)
+    doc_1_token = nlp(document_1)
+    doc_2_token = nlp(document_2)
 
-    doc_1_nlp = nlp(data_1)
-    doc_2_nlp = nlp(data_2)
-    similarity = round(doc_1_nlp.similarity(doc_2_nlp), 2)
-
+    similarity = round(doc_1_token.similarity(doc_2_token), 2)
     return "Similarity score of documents: ", similarity
+
+
+def check_categorical_similarity(category, doc_type, doc):
+    document = read_document(doc_type, doc)
+    document = preprocess_text(document)
+    category = preprocess_text(category)
+
+    category_token = nlp(category)
+    document_token = nlp(document)
+
+    similarity = round(document_token.similarity(category_token), 2)
+    return f"Similarity according to category: {similarity}"
 
 
 def catch_related_words(word):
@@ -27,11 +39,23 @@ def catch_related_words(word):
     return similar_words_list
 
 
-def check_categorical_similarity(category, doc_type, doc):
-    document = read_document(doc_type, doc)
-    document = preprocess_text(document)
-    category = preprocess_text(category)
-    category_token = nlp(category)
-    document_token = nlp(document)
-    similarity = round(document_token.similarity(category_token), 2)
-    return f"Similarity according to category: {similarity}"
+def highlight_similar_words(pdf_1, pdf_2, output_1, output_2):
+    document_1 = read_document("PDF", pdf_1)
+    document_1 = preprocess_text(document_1)
+    document_2 = read_document("PDF", pdf_2)
+    document_2 = preprocess_text(document_2)
+
+    doc_1_token = nlp(document_1)
+    
+    similar_words = set([token.text for token in doc_1_token if token.text in document_2])
+
+    for pdf, output in zip([pdf_1, pdf_2], [output_1, output_2]):
+        pdf_doc = pymupdf.open(pdf)
+        for page_num in range(len(pdf_doc)):
+            page = pdf_doc[page_num]
+            for word in similar_words:
+                rects = page.search_for(word)
+                for rect in rects:
+                    page.add_highlight_annot(rect)
+
+        pdf_doc.save(output)
