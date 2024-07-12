@@ -5,4 +5,5 @@ gradio
 scikit-learn
 matplotlib
 PyPDF2
+PyMuPDF
 python-docx
