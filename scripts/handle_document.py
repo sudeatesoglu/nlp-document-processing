@@ -16,9 +16,9 @@ def read_document(doc_type, file_path):
 def read_pdf(file_path):
     text = ""
     with open(file_path, "rb") as file:
-        reader = PyPDF2.PdfFileReader(file)
-        for page in range(reader.numPages):
-            text += reader.getPage(page).extractText()
+        reader = PyPDF2.PdfReader(file)
+        for page in range(len(reader.pages)):
+            text += reader.pages[page].extract_text()
     return text
 
 
