@@ -4,7 +4,7 @@ from entity_recognition import ner_interface
 from pca_visualization import pca_interface
 
 similarity_demo = gr.Interface(
-    fn=check_doc_similarity,
+    fn=check_cosine_similarity,
     inputs=[
         gr.Radio(["PDF", "TXT", "DOCX"], label="Document Type"),
         gr.File(label="Document 1"),
