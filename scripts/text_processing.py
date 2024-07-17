@@ -2,6 +2,7 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 from nltk.stem import WordNetLemmatizer
+from handle_document import read_document
 import string
 
 stemmer = PorterStemmer()
@@ -14,6 +15,14 @@ def preprocess_text(text):
     text = remove_stopwords(text)
     text = lemmatize_text(text)
     return text
+
+
+def process_document(doc_type, doc_1, doc_2):
+    document_1 = read_document(doc_type, doc_1)
+    document_1 = preprocess_text(document_1)
+    document_2 = read_document(doc_type, doc_2)
+    document_2 = preprocess_text(document_2)
+    return document_1, document_2
 
 
 def remove_punctuation(text):
