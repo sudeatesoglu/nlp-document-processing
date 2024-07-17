@@ -1,10 +1,26 @@
 import spacy
 import numpy as np
 import pymupdf
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 from handle_document import read_document
 from text_processing import preprocess_text
 
 nlp = spacy.load("en_core_web_md")
+
+
+def check_cosine_similarity(doc_type, doc_1, doc_2):
+    document_1 = read_document(doc_type, doc_1)
+    document_1 = preprocess_text(document_1)
+    document_2 = read_document(doc_type, doc_2)
+    document_2 = preprocess_text(document_2)
+
+    documents = [document_1, document_2]
+    vectorizer = TfidfVectorizer()
+    tfidf_matrix = vectorizer.fit_transform(documents)
+    similarity_matrix = cosine_similarity(tfidf_matrix)
+
+    return similarity_matrix[0, 1]
 
 
 def check_doc_similarity(doc_type, doc_1, doc_2):
