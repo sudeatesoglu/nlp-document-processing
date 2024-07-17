@@ -3,35 +3,24 @@ import numpy as np
 import pymupdf
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from handle_document import read_document
-from text_processing import preprocess_text
+from text_processing import *
 
 nlp = spacy.load("en_core_web_md")
 
 
 def check_cosine_similarity(doc_type, doc_1, doc_2):
-    document_1 = read_document(doc_type, doc_1)
-    document_1 = preprocess_text(document_1)
-    document_2 = read_document(doc_type, doc_2)
-    document_2 = preprocess_text(document_2)
-
+    document_1, document_2 = process_document(doc_type, doc_1, doc_2)
     documents = [document_1, document_2]
     vectorizer = TfidfVectorizer()
     tfidf_matrix = vectorizer.fit_transform(documents)
     similarity_matrix = cosine_similarity(tfidf_matrix)
-
     return similarity_matrix[0, 1]
 
 
 def check_doc_similarity(doc_type, doc_1, doc_2):
-    document_1 = read_document(doc_type, doc_1)
-    document_1 = preprocess_text(document_1)
-    document_2 = read_document(doc_type, doc_2)
-    document_2 = preprocess_text(document_2)
-
+    document_1, document_2 = process_document(doc_type, doc_1, doc_2)
     doc_1_token = nlp(document_1)
     doc_2_token = nlp(document_2)
-
     similarity = round(doc_1_token.similarity(doc_2_token), 2)
     return "Similarity score of documents: ", similarity
 
@@ -40,10 +29,8 @@ def check_categorical_similarity(category, doc_type, doc):
     document = read_document(doc_type, doc)
     document = preprocess_text(document)
     category = preprocess_text(category)
-
     category_token = nlp(category)
     document_token = nlp(document)
-
     similarity = round(document_token.similarity(category_token), 2)
     return f"Similarity according to category: {similarity}"
 
@@ -56,15 +43,9 @@ def catch_related_words(word):
 
 
 def highlight_similar_words(pdf_1, pdf_2):
-    document_1 = read_document("PDF", pdf_1.name)
-    document_1 = preprocess_text(document_1)
-    document_2 = read_document("PDF", pdf_2.name)
-    document_2 = preprocess_text(document_2)
-
+    document_1, document_2 = process_document("PDF", pdf_1.name, pdf_2.name)
     doc_1_token = nlp(document_1)
-
     similar_words = set([token.text for token in doc_1_token if token.text in document_2])
-
     output_1 = pdf_1.name.replace(".pdf", "_highlighted.pdf")
     output_2 = pdf_2.name.replace(".pdf", "_highlighted.pdf")
 
