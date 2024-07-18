@@ -27,6 +27,21 @@ categorical_similarity_demo = gr.Interface(
     description="Check the similarity of documents to a given category."
 )
 
+highlight_pattern_demo = gr.Interface(
+    fn=pattern_interface,
+    inputs=[
+        gr.Textbox(label="Word to Search"),
+        gr.Radio(["PDF"], label="Document Type"),
+        gr.File(label="PDF Document")
+    ],
+    outputs=[
+        gr.File(label="Highlighted PDF"),
+        gr.JSON(label="Matched Span")
+    ],
+    title="Pattern Highlighter",
+    description="Upload a PDF document to search and highlight the given pattern."
+)
+
 highlight_similar_words_demo = gr.Interface(
     fn=highlight_similar_words,
     inputs=[
@@ -70,6 +85,7 @@ demo = gr.TabbedInterface(
     interface_list=[
         similarity_demo,
         categorical_similarity_demo,
+        highlight_pattern_demo,
         highlight_similar_words_demo,
         ner_demo,
         pca_demo
@@ -77,12 +93,12 @@ demo = gr.TabbedInterface(
     tab_names=[
         "Document Similarity",
         "Categorical Similarity",
+        "Highlight Pattern",
         "Highlight Similar Words",
         "Named Entity Recognition",
         "PCA Visualization"
     ]
 )
-
 
 if __name__ == "__main__":
     demo.launch()
