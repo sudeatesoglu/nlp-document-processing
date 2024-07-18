@@ -7,6 +7,7 @@ highlighting similar words between PDF documents, named entity recognition (NER)
 
 - **Similarity Score Calculation**: Calculates the similarity score between two documents.
 - **Categorical Similarity**: Detects the similarity score of a document based on given keyword.
+- **Highlighting Pattern**: Highlights the tokens in PDF by given pattern.
 - **Highlighting Similar Words**: Highlights similar words between two PDF documents.
 - **Named Entity Recognition**: Extracts and displays named entities from documents.
 - **PCA Visualization**: Visualizes document word vectors using PCA.
