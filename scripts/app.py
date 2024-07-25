@@ -76,7 +76,10 @@ pca_demo = gr.Interface(
         gr.Radio(["PDF", "TXT", "DOCX"], label="Document Type"),
         gr.File(label="Document")
     ],
-    outputs=gr.Plot(),
+    outputs=[
+        gr.Textbox(label="Sentences"),
+        gr.Plot(),
+    ],
     title="Document PCA Visualization",
     description="Visualize document vectors using PCA."
 )
