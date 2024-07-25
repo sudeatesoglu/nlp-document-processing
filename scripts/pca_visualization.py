@@ -12,7 +12,7 @@ def project_document_vectors(doc_text):
     sentences = [sent.text for sent in doc.sents]
 
     if len(sentences) < 2:
-        print("The document has fewer than two sentences. PCA requires at least two points.")
+        print("The document should have at least two sentences.")
         return
 
     preprocessed_sentences = [preprocess_text(sentence) for sentence in sentences]
