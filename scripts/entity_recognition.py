@@ -8,7 +8,6 @@ nlp = spacy.load("en_core_web_md")
 
 def entity_recognize(doc_type, doc):
     document = read_document(doc_type, doc)
-    document = preprocess_text(document)
     document_token = nlp(document)
     entities = [(entity.text, entity.label_) for entity in document_token.ents]
     return entities
@@ -16,7 +15,6 @@ def entity_recognize(doc_type, doc):
 
 def display_entity_recognize(doc_type, doc):
     document = read_document(doc_type, doc)
-    document = preprocess_text(document)
     document_token = nlp(document)
     ner = displacy.render(document_token, style="ent", jupyter=True)
     return ner
