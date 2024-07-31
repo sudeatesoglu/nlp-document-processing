@@ -1,16 +1,16 @@
 # Document Processing Tool
 
-Document Processing tool is a simple NLP project that provides comparison of two documents in different formats (pdf, txt, or docx) in terms of similarity score calculation, categorical similarity detection,
-highlighting similar words between PDF documents, named entity recognition (NER), and PCA visualization.
+Document Processing tool is a simple NLP project that provides comparison of two documents in different formats (pdf, txt, or docx) in terms of similarity score calculation, categorical similarity detection, searching a pattern, highlighting similar words between PDF documents, named entity recognition (NER), and PCA visualization.
 
 ## Features
 
 - **Similarity Score Calculation**: Calculates the similarity score between two documents.
 - **Categorical Similarity**: Detects the similarity score of a document based on given keyword.
-- **Highlighting Pattern**: Highlights the tokens in PDF by given pattern.
+- **Highlighting Pattern**: Searchs for and highlights the tokens in PDF by given pattern, and shows the token place information of matched pattern.
 - **Highlighting Similar Words**: Highlights similar words between two PDF documents.
 - **Named Entity Recognition**: Extracts and displays named entities from documents.
 - **PCA Visualization**: Visualizes document word vectors using PCA.
+- **Gradio Integration**: Uses Gradio for an interactive user interface, allowing user to upload documents and view results by selected feature. Gradio is an open-source Python package that provides creating interactive web applications.
 
 ## Installation
 
